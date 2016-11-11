@@ -5,9 +5,9 @@ app = Flask(__name__)
 def hello_world():
     return "Hello, world!"
 
-# @app.route('/submit', methods=['POST'])
-# def submit():
-#     pass
+@app.route('/submit', methods=['POST'])
+def submit():
+    assert request.form['address'] is not None
 
 
 @app.route('/receive', methods=['GET'])
