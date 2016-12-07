@@ -67,24 +67,34 @@ def plan_route(locations):
         geocode.append([address,[x,y]])
 
     geocode.append(DEFAULT_START)
-    geocode.append(DEFAULT_START)
-
+    print(geocode)
     ave_x = sum(geo[1][0] for geo in geocode) / len(geocode)
     ave_y = sum(geo[1][1] for geo in geocode) / len(geocode)
-
-    sorted(geocode, key=lambda x: math.atan( (x[1][0] - ave_x) / (x[1][1] - ave_y + 0.0000000001) ) )
-
+    print(ave_x, ave_y)
+    for i in range(len(geocode)):
+        x = geocode[i]
+        #print((x[1][1] - ave_y ),(x[1][0] - ave_x))
+        print(math.atan2( (x[1][0] - ave_x),(x[1][1] - ave_y )  ) )
+    geocode = sorted(geocode, key=lambda x: math.atan2( (x[1][0] - ave_x),(x[1][1] - ave_y )  ) )
+    #sorted(geocode, key=lambda x: x[0])
+    for i in range(len(geocode)):
+        x = geocode[i]
+        #print((x[1][1] - ave_y ),(x[1][0] - ave_x))
+        print(math.atan2( (x[1][0] - ave_x),(x[1][1] - ave_y )  ) )
     for i in range(len(geocode)):
         if geocode[i][0] == "Mallinckrodt Center":
             index = i
             break
-    geocode = geocode[i+1:] + geocode[:i+1]
-
+    print(geocode)
+    geocode = geocode[i:] + geocode[:i]
+    geocode.append(DEFAULT_START)
+    print(geocode)
     return geocode
 
 if __name__ == '__main__':
     con, meta = connect()
     create_table(con, meta)
+    print("TABLE created")
     original_sigint = signal.getsignal(signal.SIGINT)
     signal.signal(signal.SIGINT, sig_handler)
     app.run(debug=True, host='localhost')

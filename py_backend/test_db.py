@@ -17,7 +17,7 @@ def connect(user='cse438', password='cse438', db='timetable', host='localhost', 
 def create_table(con, meta):
     times = Table('times', meta,
         Column('time', String),
-        Column('address', String),
+        Column('address', String, unique=True),
         Column('geocode', String),
         extend_existing=True,
     )
